@@ -32,17 +32,24 @@ class RegisterAPIView(APIView):
         return Response(data={'message': 'User created!!!'})
 
 class ConfirmAPIView(APIView):
-        def post(self, request):
-            code = request.data['code']
-            code_list = ConfirmCode.objects.filter(code=code, valid_until__gte=datetime.datetime.now())
+    def post(self, request):
+        code = request.data['code']
+        code_list = ConfirmCode.objects.filter(code=code,
+                                               valid_until__gte=datetime.datetime.now()
+                                               )
+        if code_list:
 
-            if code_list:
-                user = code_list[0]
-                user.is_active = True
-                user.save()
-                return Response(data={'message': 'user activated'})
-            else:
-                return Response(status=status.HTTP_404_NOT_FOUND)
+            confirmcode = code_list[0]
+            confirmcode.user.is_active = True
+            confirmcode.user.save()
+            #change
+            print(234)
+
+
+            code_list.delete()
+            return Response(data={'message': 'user activated'})
+        else:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
 class LoginAPIView(APIView):
     def login(request):
