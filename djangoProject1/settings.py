@@ -59,7 +59,8 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication'
     ],
-    'PAGE_SIZE':4
+    'PAGE_SIZE':4,
+    'DEFAULT_PERMISSION_CLASSES': ( 'rest_framework.permissions.IsAdminUser', ),
 }
 ROOT_URLCONF = 'djangoProject1.urls'
 
